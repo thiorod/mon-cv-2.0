@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon CV 2.0 - Générateur de CV Professionnel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mon CV 2.0</h1>
+            <p>Créez, personnalisez et sauvegardez vos CV en ligne</p>
+        </header>
+
+        <!-- Bandeau de connexion -->
+        <div id="auth-banner" class="auth-banner">
+        </div>
+
+        <!-- Barre d'outils -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <label for="template-select">Choisir un template :</label>
+                <select id="template-select" class="template-select">
+                    <option value="simple" selected>Par défaut</option>
+                    <option value="bleu">Template 1</option>
+                    <option value="vert">Template 2</option>
+                </select>
+            </div>
+            <div class="toolbar-group">
+                <button id="save-cv" class="btn-save" style="display: none;">Sauvegarder ce CV</button>
+                <button id="download-pdf" class="btn-primary">Télécharger PDF</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- COLONNE GAUCHE : FORMULAIRE -->
+            <div class="form-column">
+                <form id="cv-form" enctype="multipart/form-data">
+                    <!-- SECTION 1: PHOTO -->
+                    <fieldset class="form-section">
+                        <legend><h2>Photo de profil</h2></legend>
+                        <div class="form-row photo-upload">
+                            <label for="photo-upload">Choisir une photo :</label>
+                            <input type="file" id="photo-upload" name="photo" accept="image/*">
+                            <div class="photo-preview-container">
+                                <img id="photo-preview" src="#" alt="Aperçu photo" style="display: none;">
+                                <button type="button" id="remove-photo" class="btn-remove-photo" style="display: none;">🗑️</button>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- SECTION 2: INFORMATIONS PERSONNELLES -->
+                    <fieldset class="form-section">
+                        <legend><h2>Informations personnelles</h2></legend>
+                        <div class="form-row">
+                            <label for="nom-complet">Nom complet <span class="required">*</span></label>
+                            <input type="text" id="nom-complet" name="nom" required placeholder="Ex: thioro">
+                        </div>
+                        <div class="form-row">
+                            <label for="titre">Titre professionnel</label>
+                            <input type="text" id="titre" name="titre" placeholder="Ex: Développeuse Full Stack">
+                        </div>
+                        <div class="form-row">
+                            <label for="adresse">Adresse</label>
+                            <input type="text" id="adresse" name="adresse" placeholder="Ex: Dakar, SENEGAL">
+                        </div>
+                        <div class="form-row">
+                            <label for="telephone">Téléphone <span class="required">*</span></label>
+                            <input type="tel" id="telephone" name="telephone" required placeholder="Ex: 77 123 45 67">
+                        </div>
+                        <div class="form-row">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="Ex: tdiop@email.com">
+                        </div>
+                    </fieldset>
+
+                    <!-- SECTION 3: RÉSUMÉ PROFESSIONNEL -->
+                    <fieldset class="form-section">
+                        <legend><h2>Résumé professionnel</h2></legend>
+                        <div class="form-row">
+                            <textarea id="resume" name="resume" rows="3" placeholder="Décrivez brièvement votre profil..."></textarea>
+                        </div>
+                    </fieldset>
+
+                    <!-- SECTION 4: EXPÉRIENCES PROFESSIONNELLES -->
+                    <fieldset class="form-section">
+                        <legend><h2>Expériences professionnelles</h2></legend>
+                        <div id="conteneur-experiences"></div>
+                        <button type="button" id="ajouter-experience" class="btn-add">➕ Ajouter une expérience</button>
+                    </fieldset>
+
+                    <!-- SECTION 5: FORMATIONS -->
+                    <fieldset class="form-section">
+                        <legend><h2>Formation</h2></legend>
+                        <div id="conteneur-formations"></div>
+                        <button type="button" id="ajouter-formation" class="btn-add">➕ Ajouter une formation</button>
+                    </fieldset>
+
+                    <!-- SECTION 6: COMPÉTENCES TECHNIQUES -->
+                    <fieldset class="form-section">
+                        <legend><h2>Compétences techniques</h2></legend>
+                        <div class="form-row">
+                            <label for="competences-techniques">Compétences techniques</label>
+                            <input type="text" id="competences-techniques" name="competencesTech" placeholder="Ex: JavaScript, PHP, MySQL">
+                            <small class="form-help">Séparez par des virgules</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- SECTION 7: LANGUES -->
+                    <fieldset class="form-section">
+                        <legend><h2>Langues</h2></legend>
+                        <div id="conteneur-langues">
+                        </div>
+                        <button type="button" id="ajouter-langue" class="btn-add">➕ Ajouter une langue</button>
+                    </fieldset>
+
+                    <!-- SECTION 8: CENTRES D'INTÉRÊT -->
+                    <fieldset class="form-section">
+                        <legend><h2>Centres d'intérêt</h2></legend>
+                        <div class="form-row">
+                            <label for="centres-interet">Centres d'intérêt</label>
+                            <input type="text" id="centres-interet" name="centresInteret" placeholder="Ex: Lecture, Voyages, Sport, Musique">
+                            <small class="form-help">Séparez par des virgules</small>
+                        </div>
+                    </fieldset>
+
+                    <!-- SECTION 9: RÉSEAUX SOCIAUX -->
+                    <fieldset class="form-section">
+                        <legend><h2>Réseaux sociaux</h2></legend>
+                        <div class="form-row">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/votreprofil">
+                        </div>
+                        <div class="form-row">
+                            <label for="github">GitHub</label>
+                            <input type="url" id="github" name="github" placeholder="https://github.com/votreprofil">
+                        </div>
+                        <div class="form-row">
+                            <label for="portfolio">Site web / Portfolio</label>
+                            <input type="url" id="portfolio" name="portfolio" placeholder="https://votresite.com">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!-- COLONNE DROITE : Aperçu-->
+            <div class="preview-column">
+                <h2>Aperçu</h2>
+                <div id="cv-preview" class="cv-preview template-simple">
+    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals pour inscription/connexion -->
+    <div id="auth-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="auth-forms">
+                <!-- Formulaire de connexion -->
+                <div id="login-form">
+                    <h2>Connexion</h2>
+                    <form onsubmit="event.preventDefault(); loginUser();">
+                        <div class="form-row">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Mot de passe <span class="required">*</span></label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Se connecter</button>
+                    </form>
+                    <p class="text-center mt-3">Pas encore de compte ? <a href="#" onclick="showRegister()">S'inscrire</a></p>
+                </div>
+                
+                <!-- Formulaire d'inscription -->
+                <div id="register-form" style="display: none;">
+                    <h2>Inscription</h2>
+                    <form onsubmit="event.preventDefault(); registerUser();">
+                        <div class="form-row">
+                            <label>Nom complet <span class="required">*</span></label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Mot de passe <span class="required">*</span></label>
+                            <input type="password" id="register-password" required minlength="6">
+                            <div class="password-strength">
+                                <div class="password-strength-bar"></div>
+                                <div class="password-strength-text"></div>
+                            </div>
+                            <div class="password-requirements">
+                                <small>Le mot de passe doit contenir :</small>
+                                <ul>
+                                    <li id="req-length" class="invalid">❌ Au moins 6 caractères</li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">S'inscrire</button>
+                    </form>
+                    <p class="text-center mt-3">Déjà inscrit ? <a href="#" onclick="showLogin()">Se connecter</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour la liste des CV sauvegardés -->
+    <div id="cvs-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Mes CV sauvegardés</h2>
+            <div id="cvs-list"></div>
+        </div>
+    </div>
+
+    <!-- Scripts JS modulaires -->
+    <script src="js/validation.js"></script>
+<script src="js/templateManager.js"></script>
+<script src="js/uiManager.js"></script>
+<script src="js/storageManager.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
