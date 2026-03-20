@@ -1,5 +1,4 @@
-// js/validation.js - Fonctions de validation
-
+// validation
 function validerEmail(email) {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return regex.test(email);
@@ -39,16 +38,10 @@ function formaterTelephone(telephone) {
 }
 
 function evaluerForceMotDePasse(password) {
-    let score = 0;
-    if (password.length >= 6) score++;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-    
-    if (score <= 2) return 'weak';
-    if (score <= 4) return 'medium';
-    return 'strong';
+    if (password.length >= 6) {
+        return 'medium';
+    }
+    return 'weak';
 }
 
 function afficherErreur(champId, message, type = 'error') {
@@ -120,3 +113,4 @@ function validerFormulaire() {
     
     return isValid;
 }
+
