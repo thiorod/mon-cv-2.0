@@ -1,5 +1,4 @@
-// js/uiManager.js - Version corrigée
-
+// js/uiManager.js
 // Compteurs
 let compteurExperiences = 0;
 let compteurFormations = 0;
