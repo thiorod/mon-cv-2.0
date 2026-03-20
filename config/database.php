@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $host = 'localhost';
-$dbname = 'cv_generator_test'; // ou cv_generator selon ta config
+$dbname = 'cv_generator_test'; 
 $username = 'root';
 $password = '';
 
