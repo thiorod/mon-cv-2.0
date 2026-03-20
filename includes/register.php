@@ -1,5 +1,5 @@
 <?php
-// includes/register.php
+// includes/register.php - Version simplifiée
 require_once '../config/database.php';
 
 header('Content-Type: application/json');
@@ -14,15 +14,6 @@ $name = $_POST['name'] ?? '';
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
-// Validation supplémentaire du mot de passe côté serveur
-if (strlen($password) < 6 || 
-    !preg_match('/[A-Z]/', $password) || 
-    !preg_match('/[0-9]/', $password) || 
-    !preg_match('/[^A-Za-z0-9]/', $password)) {
-    echo json_encode(['success' => false, 'message' => 'Le mot de passe doit contenir au moins 6 caractères, une majuscule, un chiffre et un caractère spécial']);
-    exit();
-}
-
 if (empty($name) || empty($email) || empty($password)) {
     echo json_encode(['success' => false, 'message' => 'Tous les champs sont requis']);
     exit();
@@ -33,8 +24,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
+// ✅ Validation simplifiée : seulement 6 caractères
 if (strlen($password) < 6) {
-    echo json_encode(['success' => false, 'message' => 'Le mot de passe doit faire au moins 6 caractères']);
+    echo json_encode(['success' => false, 'message' => 'Le mot de passe doit contenir au moins 6 caractères']);
     exit();
 }
 
@@ -48,10 +40,11 @@ try {
         exit();
     }
     
-    // Hasher le mot de passe et insérer
+    // Hasher le mot de passe
     $hash = password_hash($password, PASSWORD_DEFAULT);
     
-    $stmt = $pdo->prepare("INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES (?, ?, ?)");
+    // Insérer le nouvel utilisateur
+    $stmt = $pdo->prepare("INSERT INTO utilisateurs (nom, email, mot_de_passe, date_inscription) VALUES (?, ?, ?, NOW())");
     $stmt->execute([$name, $email, $hash]);
     
     $userId = $pdo->lastInsertId();
@@ -72,6 +65,7 @@ try {
     ]);
     
 } catch (PDOException $e) {
+    error_log("Erreur register: " . $e->getMessage());
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Erreur base de données']);
 }

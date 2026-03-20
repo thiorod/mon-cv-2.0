@@ -1,4 +1,4 @@
-// js/auth.js - Authentification
+// js/auth.js - Version simplifiée
 
 function checkAuthStatus() {
     fetch('includes/check-auth.php')
@@ -9,10 +9,10 @@ function checkAuthStatus() {
             
             if (data.authentifie) {
                 banner.innerHTML = `
-                    <span>Connecté en tant que <strong>${data.user.name}</strong></span>
+                    <span> Connecté en tant que <strong>${data.user.name}</strong></span>
                     <div>
-                        <a href="#" onclick="showMyCVs()">Mes CV</a>
-                        <a href="includes/logout.php">Déconnexion</a>
+                        <a href="#" onclick="showMyCVs()"> Mes CV</a>
+                        <a href="includes/logout.php"> Déconnexion</a>
                     </div>
                 `;
                 saveBtn.style.display = 'inline-block';
@@ -67,8 +67,9 @@ function registerUser() {
         return;
     }
     
+    // ✅ Validation simplifiée : seulement 6 caractères
     if (password.length < 6) {
-        alert('Mot de passe trop court');
+        alert('❌ Le mot de passe doit contenir au moins 6 caractères');
         return;
     }
     
