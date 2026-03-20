@@ -32,7 +32,7 @@ L'utilisateur peut remplir ses informations, ajouter ses expériences, formation
 - On peut télécharger son CV en PDF d'un clic
 - Le PDF tient sur une seule page (on a galéré mais on a réussi)
 
-<!-- Comment on a construit ça -->
+<!-- organisation -->
 
 <!-- Côté frontend -->
 - HTML pour la structure
@@ -53,5 +53,6 @@ L'utilisateur peut remplir ses informations, ajouter ses expériences, formation
 <!-- gestion des roles -->
 
 Ndeye Thioro DIOP: J'ai principalement travaillé sur le backend : la base de données, l'authentification, la sauvegarde des CV, et la logique principale. J'ai aussi géré l'intégration de toutes les parties pour que ça fonctionne ensemble. 
-Maréme KANE : Elle s'est occupée de tout ce qui est frontend : le HTML, le CSS, les templates, et la validation des formulaires. J'ai aussi travaillé sur l'aspect responsive pour que ça marche sur mobile. 
+Maréme KANE : Elle s'est occupée de tout ce qui est frontend : le HTML, le CSS, les templates (codage), et la validation des formulaires. J'ai aussi travaillé sur l'aspect responsive pour que ça marche sur mobile. 
+
 
